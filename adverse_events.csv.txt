@@ -1,0 +1,6 @@
+PatientID,AdverseEvent,Severity
+PT-1001,Headache,Mild
+PT-1003,Nausea,Moderate
+PT-1005,Fatigue,Mild
+PT-1007,Rash,Moderate
+PT-1009,Headache,Mild

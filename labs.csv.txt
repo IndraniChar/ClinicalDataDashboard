@@ -1,0 +1,11 @@
+PatientID,Visit,Value
+PT-1001,Baseline,98.5
+PT-1001,Week 4,102.3
+PT-1002,Baseline,105.7
+PT-1002,Week 4,99.2
+PT-1003,Baseline,94.8
+PT-1003,Week 4,107.1
+PT-1004,Baseline,101.2
+PT-1004,Week 4,96.7
+PT-1005,Baseline,103.5
+PT-1005,Week 4,100.8

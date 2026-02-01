@@ -1,0 +1,32 @@
+# Generate clinical data
+set.seed(123)
+
+patients <- data.frame(
+  PatientID = sprintf("PT-%04d", 1:100),
+  Age = sample(25:75, 100, replace = TRUE),
+  Gender = sample(c("Male", "Female"), 100, replace = TRUE),
+  Treatment = sample(c("Drug A", "Drug B", "Placebo"), 100, replace = TRUE),
+  Site = paste("Site", sample(1:5, 100, replace = TRUE)),
+  BP = round(rnorm(100, mean = 130, sd = 15))
+)
+
+labs <- data.frame(
+  PatientID = rep(patients$PatientID, each = 2),
+  Visit = rep(c("Baseline", "Week 4"), 100),
+  Value = round(rnorm(200, mean = 100, sd = 15), 1)
+)
+
+ae_data <- data.frame(
+  PatientID = sample(patients$PatientID, 20, replace = TRUE),
+  AdverseEvent = sample(c("Headache", "Nausea", "Fatigue", "Rash"), 20, replace = TRUE),
+  Severity = sample(c("Mild", "Moderate"), 20, replace = TRUE)
+)
+
+write.csv(patients, "../data/patients.csv", row.names = FALSE)
+write.csv(labs, "../data/labs.csv", row.names = FALSE)
+write.csv(ae_data, "../data/adverse_events.csv", row.names = FALSE)
+
+cat("Clinical data created successfully!\n")
+cat("Patients:", nrow(patients), "\n")
+cat("Lab records:", nrow(labs), "\n")
+cat("Adverse events:", nrow(ae_data), "\n")

@@ -1,0 +1,11 @@
+PatientID,Age,Gender,Treatment,Site,BP
+PT-1001,42,Female,Drug A,Site 1,135
+PT-1002,55,Male,Drug B,Site 2,128
+PT-1003,61,Female,Placebo,Site 3,142
+PT-1004,33,Male,Drug A,Site 1,121
+PT-1005,47,Female,Drug B,Site 2,130
+PT-1006,52,Male,Placebo,Site 3,125
+PT-1007,38,Female,Drug A,Site 1,138
+PT-1008,66,Male,Drug B,Site 2,119
+PT-1009,44,Female,Placebo,Site 3,133
+PT-1010,59,Male,Drug A,Site 1,127

@@ -1,0 +1,56 @@
+# Clinical Data Management Dashboard
+library(shiny)
+library(ggplot2)
+
+# UI
+ui <- fluidPage(
+  titlePanel("Clinical Trial Dashboard"),
+  sidebarLayout(
+    sidebarPanel(
+      h4("Clinical Data Summary"),
+      p("Total Patients: 100"),
+      p("Average Age: 52.3"),
+      hr(),
+      selectInput("gender", "Filter by Gender:", 
+                  choices = c("All", "Male", "Female")),
+      actionButton("refresh", "Refresh Dashboard")
+    ),
+    mainPanel(
+      plotOutput("agePlot"),
+      plotOutput("treatmentPlot")
+    )
+  )
+)
+
+# Server
+server <- function(input, output) {
+  
+  # Create sample data
+  set.seed(123)
+  patients <- data.frame(
+    Age = sample(25:75, 100, replace = TRUE),
+    Gender = sample(c("Male", "Female"), 100, replace = TRUE),
+    Treatment = sample(c("Drug A", "Drug B", "Placebo"), 100, replace = TRUE)
+  )
+  
+  output$agePlot <- renderPlot({
+    ggplot(patients, aes(x = Age)) +
+      geom_histogram(fill = "blue", bins = 20) +
+      ggtitle("Patient Age Distribution") +
+      theme_minimal()
+  })
+  
+  output$treatmentPlot <- renderPlot({
+    ggplot(patients, aes(x = Treatment, fill = Treatment)) +
+      geom_bar() +
+      ggtitle("Patients by Treatment Group") +
+      theme_minimal()
+  })
+  
+  observeEvent(input$refresh, {
+    session$reload()
+  })
+}
+
+# Run app
+shinyApp(ui = ui, server = server)
