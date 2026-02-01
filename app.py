@@ -1,46 +1,54 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from datetime import datetime
 
-st.set_page_config(page_title="Clinical Data Dashboard", layout="wide")
+st.set_page_config(page_title="Clinical Dashboard", layout="wide")
 
 st.title("🏥 Clinical Data Dashboard")
-st.markdown("Monitor and analyze clinical trial data")
+st.write("Upload and analyze clinical trial data")
 
-# Sidebar
-with st.sidebar:
-    st.header("📊 Data Upload")
-    uploaded_file = st.file_uploader("Upload CSV", type=['csv'])
-    
-    st.header("⚙️ Settings")
-    sensitivity = st.slider("Sensitivity", 1, 10, 5)
-    
-    st.header("🔍 Filters")
-    # Filters will go here
+# File upload
+uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
-# Main area
-if uploaded_file:
+if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     
-    # Show metrics
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Patients", len(df))
-    col2.metric("Avg Age", f"{df['Age'].mean():.1f}")
-    col3.metric("Records", df.shape[0])
-    
     # Show data
-    st.subheader("📋 Data Preview")
+    st.write("### Data Preview")
     st.dataframe(df)
     
-    # Charts
-    st.subheader("📈 Visualizations")
-    if 'Age' in df.columns:
-        fig = px.histogram(df, x='Age', title='Age Distribution')
-        st.plotly_chart(fig)
+    # Basic stats
+    st.write("### Statistics")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Patients", len(df))
+    col2.metric("Columns", len(df.columns))
+    col3.metric("Total Cells", df.size)
+    
+    # Show column info
+    if st.checkbox("Show Column Details"):
+        st.write(df.dtypes)
+    
+    # Simple visualization
+    if len(df) > 0:
+        numeric_cols = df.select_dtypes(include=['number']).columns
+        if len(numeric_cols) > 0:
+            st.write("### Distribution")
+            col_to_plot = st.selectbox("Select column to plot", numeric_cols)
+            fig = px.histogram(df, x=col_to_plot)
+            st.plotly_chart(fig)
     
     # Download button
     csv = df.to_csv(index=False)
-    st.download_button("📥 Download Data", csv, "clinical_data.csv")
+    st.download_button(
+        "📥 Download Processed Data",
+        csv,
+        "clinical_data_processed.csv"
+    )
 else:
-    st.info("👆 Please upload a CSV file")
+    st.info("👆 Please upload a CSV file to begin")
+    st.write("Sample CSV format:")
+    st.code("""PatientID,Age,Gender,Treatment,Site
+1,42,F,Drug,Site1
+2,35,M,Placebo,Site2
+3,56,F,Drug,Site1
+4,48,M,Drug,Site3""")
